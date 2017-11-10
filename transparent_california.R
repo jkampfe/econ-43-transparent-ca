@@ -190,28 +190,28 @@ rm(list = ls())
     geom_polygon(data = ca_county, fill = NA, color = "white") +
     geom_polygon(color = "black", fill = NA)  # get the state border back on top
 
-  cities <- c("SAN JOSE","Sausalito", "San Diego", "Los Angeles", "Sacramento", "Oakland", "Los Gatos", "Beverly Hills","S. San Francisco")
-  geocode(cities)
-  
-  #Inserts values into separate Data Frames (each data frame is one column)
-  city_avg <- as.data.frame(c(sj_avg, sf_avg, saus_avg, sd_avg, la_avg, sac_avg, oak_avg, lg_avg, bh_avg))
-  city_names <- as.data.frame(cities)
-  city_locs <- as.data.frame(geocode(cities))
-  
-  #Merge data frames horizontally
-  all_together <- as.data.frame(c(city_names, city_avg, city_locs))
+cities <- c("SAN JOSE","Sausalito", "San Diego", "Los Angeles", "Sacramento", "Oakland", "Los Gatos", "Beverly Hills","S. San Francisco")
+geocode(cities)
 
-  #Rename the columns
-  colnames(all_together) <- c("City Name", "Average Pay", "Longitude", "Latitude")
-  all_together <- all_together[, -c(5:7)]
-  all_together
- 
+#Inserts values into separate Data Frames (each data frame is one column)
+city_avg <- as.data.frame(c(sj_avg, sf_avg, saus_avg, sd_avg, la_avg, sac_avg, oak_avg, lg_avg, bh_avg))
+city_names <- as.data.frame(cities)
+city_locs <- as.data.frame(geocode(cities))
+
+#Merge data frames horizontally
+all_together <- as.data.frame(c(city_names, city_avg, city_locs))
+
+#Rename the columns
+colnames(all_together) <- c("City Name", "AveragePay", "Longitude", "Latitude")
+all_together <- all_together[, -c(5:7)]
+all_together
 
 #Makes Maps
 cabox <- make_bbox(lon = all_together$Longitude, lat = all_together$Latitude, f = .1)
 
 ca_map <- get_map(location = cabox, maptype = "roadmap", source = "google")
 
-ggmap(ca_map) + geom_point(data = all_together, mapping = aes(x = Longitude, y = Latitude, size = Average Pay), color = "red")
+ggmap(ca_map) + geom_point(data = all_together, mapping = aes(x = Longitude, y = Latitude, size = (AveragePay)) , color = "red")
 
-  
+#geom_point(aes(x = lon, y = lat, size = sqrt(flights)), data = airportD, alpha = .5)
+
