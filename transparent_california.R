@@ -202,10 +202,16 @@ rm(list = ls())
   all_together <- as.data.frame(c(city_names, city_avg, city_locs))
 
   #Rename the columns
-  colnames(all_together) <- c("City Name", "Average Pay", "Longitude", "Latitude")
+  colnames(all_together) <- c("City Name", "AveragePay", "Longitude", "Latitude")
   all_together <- all_together[, -c(5:7)]
   all_together
  
+
+#Makes Maps
+cabox <- make_bbox(lon = all_together$Longitude, lat = all_together$Latitude, f = .1)
+
+ca_map <- get_map(location = cabox, maptype = "roadmap", source = "google")
+
 
 #Makes Maps
 cabox <- make_bbox(lon = all_together$Longitude, lat = all_together$Latitude, f = .1)
