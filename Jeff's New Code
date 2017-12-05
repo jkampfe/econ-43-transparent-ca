@@ -1,3 +1,4 @@
+
 #==============================================================================
 #   Transparent California
 #==============================================================================
@@ -175,3 +176,16 @@ all_together <- as.data.frame(c(city_names, city_avg, city_locs))
 colnames(all_together) <- c("CityName", "AveragePay", "Longitude", "Latitude")
 all_together <- all_together[, -c(5:7)]
 all_together
+
+
+#Makes Maps
+myLocation <- "San Francisco"
+
+myMap <- get_map(location=myLocation,
+                 source="google", maptype="roadmap", zoom=9)
+ggmap(myMap)+ 
+  geom_point(data = all_together, mapping = aes(x = Longitude, y = Latitude, size = AveragePay), color = "red")  +   labs(x = 'Longitude', y = 'Latitude') +
+  geom_label_repel(data = all_together, aes(x = Longitude, y = Latitude, label = CityName), 
+                   fill = "white", box.padding = unit(.4, "lines"),
+                   label.padding = unit(.15, "lines"),
+                   segment.color = "red", segment.size = 1)
